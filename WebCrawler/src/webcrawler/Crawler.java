@@ -14,7 +14,10 @@ public class Crawler {
     
     private Queue<MyUrl> _urls;
     private Validator _validator;
-    
+    /** Constructor for Crawler Class 
+     *  @param validator that validates the url
+     * @
+     */
     public Crawler(Validator v)
     {
         _validator=v;
