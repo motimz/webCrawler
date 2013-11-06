@@ -4,6 +4,7 @@
  */
 package webcrawler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class Validator {
     /** Constructor for Validator class
      * @param keywords that needs to be in the title
      */
-    public Validator(String keywords) 
+    public Validator(ArrayList<String> keywords) 
     {
         
     }
