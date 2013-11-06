@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  *
  * @author motimi
+ * @author gilmi
  */
 public class WebCrawler {
 
