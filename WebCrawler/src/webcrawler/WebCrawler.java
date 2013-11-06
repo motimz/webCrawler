@@ -31,6 +31,7 @@ public class WebCrawler {
             keywords.add(args[i]);
         
         // create Crawler and start
-        Crawler crawler = new Crawler(new Validator(keywords));
+        //Crawler crawler = new Crawler(new Validator(keywords));
+        // crawler.start(url, limit);
     }
 }
