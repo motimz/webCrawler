@@ -4,6 +4,8 @@
  */
 package webcrawler;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -19,19 +21,34 @@ public class WebCrawler {
      */
     public static void main(String[] args) {
         // check usage
+        /*
         if (args.length < NUM_OF_ARGS)
         {
             System.out.println("usage: java WebCrawler <url> <limit> <keywords>");
             return;
         }
-        
+         */
         // create keywords array
         ArrayList<String> keywords = new ArrayList<>();
+        /*
         for (int i = 2; i < args.length; i++)
             keywords.add(args[i]);
-        
+        */
+        try
+        {
+        int limit =30;
+        MyUrl url=new MyUrl(new URL("http://docs.oracle.com/cd/E22289_01/html/821-1274/configuring-the-default-jvm-and-java-arguments.html"));
+        keywords.add("walla");
         // create Crawler and start
-        //Crawler crawler = new Crawler(new Validator(keywords));
-        // crawler.start(url, limit);
+        Crawler crawler = new Crawler(new Validator(keywords));
+        crawler.startCrawl(url, limit);
+        }
+        catch(MalformedURLException e)
+        {
+            
+        }
+        
+        
+        
     }
 }
