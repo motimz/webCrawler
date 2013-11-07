@@ -39,14 +39,15 @@ public class Crawler {
         try{
         //add the first url to the list
             _urls.add(url);
-            
+            if(!_validator.Validate(_urls.peek())) //checks if first url validated
+            {
+                  return;
+            }
             /* run on the list of urls . download the url if it is validated
              * and pop it from the list
              */
-            for(int i=0;i<limit && _urls.isEmpty()==false;i++)
+            for(int i=0;i<limit && !_urls.isEmpty();i++)
             {
-                if(_validator.Validate(_urls.peek())) //checks if url validated
-                {
                     URL check=_urls.poll();// pops the first url in list
                     System.out.println("Downloading " + check.toString());
                     urls_list=scanUrl(check);//scans the url for links and returns list of links
@@ -60,16 +61,13 @@ public class Crawler {
                         }
                         
                     }
-                }
-                else // if not validated pop it without scanning it.
-                {
-                    _urls.poll();
-                }
+                
         }
         }catch(Exception a)
         {
             System.out.println(a.toString());
         }
+        
     }
     
     public List<String> scanUrl(URL url)
