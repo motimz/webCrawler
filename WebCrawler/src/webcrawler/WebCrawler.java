@@ -4,6 +4,7 @@
  */
 package webcrawler;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,13 +38,18 @@ public class WebCrawler {
         try
         {
         int limit =30;
-        MyUrl url=new MyUrl(new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html"));
+        URL url=new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html");
+        
         keywords.add("walla");
         // create Crawler and start
         Crawler crawler = new Crawler(new Validator(keywords));
         crawler.startCrawl(url, limit);
         }
         catch(MalformedURLException e)
+        {
+            
+        }
+        catch(IOException e)
         {
             
         }

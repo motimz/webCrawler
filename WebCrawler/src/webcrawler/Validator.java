@@ -4,6 +4,7 @@
  */
 package webcrawler;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
  * 
  */
 public class Validator {
-    private Set<MyUrl> _visited = new HashSet();
+    private Set<URL> _visited = new HashSet();
     private String _keywords;
     private String _fileType;
     
@@ -26,6 +27,15 @@ public class Validator {
         
     }
     /** STUB Validate Function */
-    public Boolean Validate(MyUrl url) { return true; }
+    public Boolean Validate(URL url) { 
+        if(_visited.contains(url))
+            return false;
+        else
+            _visited.add(url);
+        if(url.getProtocol().toString().compareTo("http")!=0 || url.getProtocol().toString().compareTo("text")!=0 )
+            return (true);
+        return true;
+            
+    }
     
 }

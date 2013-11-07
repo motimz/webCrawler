@@ -43,4 +43,14 @@ public class MyUrl {
     }
     
     public URL getURL() { return _url; }
+    
+    public boolean equals(MyUrl url)
+    {
+        if(url.toString().compareTo(_url.toString())==0)
+            return true;
+        return false;
+    }
+    
+    
+    
 }
