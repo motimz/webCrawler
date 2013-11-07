@@ -35,16 +35,31 @@ public class Crawler {
     
     public void startCrawl(MyUrl url,int limit)
     {
+        List<String> urls_list=new ArrayList<String>();
         try{
-        _urls.add(url);
-        for(int i=0;i<limit && _urls.isEmpty()==false && i<3;i++)
-        {
-            if(_validator.Validate(_urls.peek()))
+        //add the first url to the list
+            _urls.add(url);
+            
+            /* run on the list of urls . download the url if it is validated
+             * and pop it from the list
+             */
+            for(int i=0;i<limit && _urls.isEmpty()==false;i++)
             {
-                MyUrl check=_urls.peek();
-                scanUrl(check);
-                int a =5; 
-            }
+                if(_validator.Validate(_urls.peek())) //checks if url validated
+                {
+                    MyUrl check=_urls.poll();// pops the first url in list
+                    System.out.println("Downloading " + check.getURL().toString());
+                    urls_list=scanUrl(check);//scans the url for links and returns list of links
+                    for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
+                    {
+                        System.out.println("scanned " + urls_list.get(j).toString());
+                        _urls.add(new MyUrl(new URL(urls_list.get(j)))); 
+                    }
+                }
+                else // if not validated pop it without scanning it.
+                {
+                    _urls.poll();
+                }
         }
         }catch(Exception a)
         {
@@ -52,7 +67,7 @@ public class Crawler {
         }
     }
     
-    public void scanUrl(MyUrl url)
+    public List<String> scanUrl(MyUrl url)
     {      
         Pattern htmltag;
         Pattern link;
@@ -76,19 +91,18 @@ public class Crawler {
                 .replaceFirst("\">", "")
                 .replaceFirst("\"[\\s]?target=\"[a-zA-Z_0-9]*", "");
                 if (valid(linkd)) {
-                    links.add(makeAbsolute(url.getURL().toString(), linkd));
-                    System.out.println(links.toString());
+                    links.add(makeAbsolute(url.getURL().toString(), linkd));  
                 }
-            }
-            
-               
+                
+            }  
+            return (links); 
         }catch (MalformedURLException e) {
             e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        
+      return (links); 
     }
     
     private boolean valid(String s) {

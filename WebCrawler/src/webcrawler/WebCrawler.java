@@ -37,7 +37,7 @@ public class WebCrawler {
         try
         {
         int limit =30;
-        MyUrl url=new MyUrl(new URL("http://docs.oracle.com/cd/E22289_01/html/821-1274/configuring-the-default-jvm-and-java-arguments.html"));
+        MyUrl url=new MyUrl(new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html"));
         keywords.add("walla");
         // create Crawler and start
         Crawler crawler = new Crawler(new Validator(keywords));
