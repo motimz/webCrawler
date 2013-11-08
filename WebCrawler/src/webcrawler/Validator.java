@@ -28,12 +28,6 @@ public class Validator {
     }
     /** STUB Validate Function */
     public Boolean Validate(URL url) { 
-        if(_visited.contains(url))
-            return false;
-        else
-            _visited.add(url);
-        if(url.getProtocol().toString().compareTo("http")!=0 || url.getProtocol().toString().compareTo("text")!=0 )
-            return (true);
         return true;
             
     }
