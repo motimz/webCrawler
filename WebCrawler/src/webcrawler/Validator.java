@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class Validator {
     private Set<MyUrl> _visited = new HashSet();
-    private String _keywords;
+    private String _keywords = "";
     private static final String FILETYPE = "text/html";
     
     /** Constructor for Validator class
@@ -27,14 +27,13 @@ public class Validator {
     public Validator(ArrayList<String> keywords) 
     {
         // add keywords to pattern string
-        _keywords += "(";
+        _keywords += ".*(";
         for (String keyword : keywords)
            _keywords += keyword + "|";
         
-        // remove last "|" and replace it with ")"
-        _keywords.substring(0, _keywords.length()-1);
-        if (_keywords.length() != 0)
-            _keywords += ")";
+        // remove last "|" and replace it with ").*"
+        _keywords = _keywords.substring(0, _keywords.length()-1);
+        _keywords += ").*";
         
     }
     /** Validate Function. checks 4 things:
@@ -54,7 +53,7 @@ public class Validator {
     {
         if (isVisited(url))
             return false;
-        
+
         if (isDisallowed(url, robotsFile))
             return false;
         
@@ -93,9 +92,10 @@ public class Validator {
     {
         try
         {
-            if (url.getType().equalsIgnoreCase(FILETYPE))
+            if (url.getType().contains(FILETYPE))
                 return true;
-        } catch (IOException e) { }
+            
+        } catch (IOException e) { System.err.println("can't connect");}
         
         return false;
     }
@@ -103,11 +103,12 @@ public class Validator {
     {
         try 
         {
-            String pattern = "<title>(" + _keywords + ")<title>";
+            String pattern = "(<title>)(" + _keywords + ")(</title>)";
+            String urlstr = url.getString();
             Matcher matcher = Pattern.
                    compile(pattern, Pattern.CASE_INSENSITIVE).
-                   matcher(url.getString());
-           
+                   matcher(urlstr);
+
            if (matcher.find())
                return true;
         }
