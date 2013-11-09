@@ -68,13 +68,17 @@ public class MyUrl
     // ================================================
     
     public String getPath() { return _url.getPath(); }
-    public String getHost() { return _url.getHost(); }
+    public String getHost() { return "http://" + _url.getHost(); }
     public String getAddress() { return _url.toString(); }
     public String getType() throws IOException
     {
         HttpURLConnection connection = (HttpURLConnection)_url.openConnection();
         connection.setRequestMethod("HEAD");
         connection.connect();
-        return connection.getContentType();
+        
+         String type = connection.getContentType();
+        connection.disconnect();
+        
+         return type;
     }
 }
