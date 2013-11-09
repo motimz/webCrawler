@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  */
 public class Validator {
-    private Set<URL> _visited = new HashSet();
+    private Set<MyUrl> _visited = new HashSet();
     private String _keywords;
     private String _fileType;
     
@@ -27,7 +27,7 @@ public class Validator {
         
     }
     /** STUB Validate Function */
-    public Boolean Validate(URL url) { 
+    public Boolean Validate(MyUrl url) { 
         return true;
             
     }

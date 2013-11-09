@@ -38,7 +38,7 @@ public class WebCrawler {
         try
         {
         int limit =30;
-        URL url=new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html");
+        MyUrl url=new MyUrl(new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html"));
         
         keywords.add("walla");
         // create Crawler and start

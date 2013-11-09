@@ -14,14 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 /**
  *
  * @author motimi
  */
 public class Crawler {
     
-    private LinkedList<URL> _urls;
+    private LinkedList<MyUrl> _urls;
     private Validator _validator;
     /** Constructor for Crawler Class 
      *  @param validator that validates the url
@@ -30,10 +29,10 @@ public class Crawler {
     public Crawler(Validator v)
     {
         _validator=v;   
-        _urls=new LinkedList<URL>();
+        _urls=new LinkedList<MyUrl>();
     }
     
-    public void startCrawl(URL url,int limit)
+    public void startCrawl(MyUrl url,int limit)
     {
         List<String> urls_list=new ArrayList<String>();
         try{
@@ -48,16 +47,16 @@ public class Crawler {
              */
             for(int i=0;i<limit && !_urls.isEmpty();i++)
             {
-                    URL check=_urls.poll();// pops the first url in list
-                    System.out.println("Downloading " + check.toString());
+                    MyUrl check=_urls.poll();// pops the first url in list
+                    System.out.println("Downloading " + check.getHost());
                     urls_list=scanUrl(check);//scans the url for links and returns list of links
                     for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
                     {
                         
-                        if(_validator.Validate(new URL(urls_list.get(j))))
+                        if(_validator.Validate(new MyUrl(new URL(urls_list.get(j)))))
                         {
                             System.out.println("scanned " + urls_list.get(j).toString());
-                            _urls.add(new URL(urls_list.get(j))); 
+                            _urls.add(new MyUrl(new URL(urls_list.get(j)))); 
                         }
                         
                     }
@@ -70,7 +69,7 @@ public class Crawler {
         
     }
     
-    public List<String> scanUrl(URL url)
+    public List<String> scanUrl(MyUrl url)
     {      
         Pattern htmltag;
         Pattern link;
@@ -78,13 +77,11 @@ public class Crawler {
         htmltag = Pattern.compile("<a\\b[^>]*href=\"[^>]*>(.*?)</a>");
         link = Pattern.compile("href=\"[^>]*\">");
         List<String> links = new ArrayList<String>();
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL(url.toString()).openStream()));
-            String s;
-            StringBuilder builder = new StringBuilder();
-            while ((s = bufferedReader.readLine()) != null) {
-                builder.append(s);
-            }
+       
+        try{
+            String builder=url.getString();
+        
+        
 
             Matcher tagmatch = htmltag.matcher(builder.toString());
             while (tagmatch.find()) {
@@ -94,18 +91,15 @@ public class Crawler {
                 .replaceFirst("\">", "")
                 .replaceFirst("\"[\\s]?target=\"[a-zA-Z_0-9]*", "");
                 if (valid(linkd)) {
-                    links.add(makeAbsolute(url.toString(), linkd));  
+                    links.add(makeAbsolute(url.getAddress(), linkd));  
                 }
                 
             }  
             return (links); 
-        }catch (MalformedURLException e) {
-            e.printStackTrace();
+        }catch(IOException a){
+            System.out.println(a.toString());
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-      return (links); 
+        return (links);
     }
     
     private boolean valid(String s) {
