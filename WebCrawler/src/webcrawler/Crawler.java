@@ -38,7 +38,7 @@ public class Crawler {
         try{
         //add the first url to the list
             _urls.add(url);
-            if(!_validator.Validate(_urls.peek())) //checks if first url validated
+            if(!_validator.Validate(_urls.peek(),new MyUrl(new URL(_urls.peek().getHost()+"/robots.txt")))) //checks if first url validated
             {
                   return;
             }
@@ -53,10 +53,10 @@ public class Crawler {
                     for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
                     {
                         
-                        if(_validator.Validate(new MyUrl(new URL(urls_list.get(j)))))
+                        if(_validator.Validate(new MyUrl(new URL(urls_list.get(j))),new MyUrl(new URL(urls_list.get(j)+"/robots.txt"))))
                         {
                             System.out.println("scanned " + urls_list.get(j).toString());
-                            _urls.add(new MyUrl(new URL(urls_list.get(j)))); 
+                            _urls.add(new MyUrl(new URL(urls_list.get(j))));
                         }
                         
                     }
@@ -80,13 +80,11 @@ public class Crawler {
        
         try{
             String builder=url.getString();
-        
-        
-
+            
             Matcher tagmatch = htmltag.matcher(builder.toString());
             while (tagmatch.find()) {
                 Matcher matcher = link.matcher(tagmatch.group());
-                matcher.find();
+                matcher.find();     
                 String linkd = matcher.group().replaceFirst("href=\"", "")
                 .replaceFirst("\">", "")
                 .replaceFirst("\"[\\s]?target=\"[a-zA-Z_0-9]*", "");
@@ -110,7 +108,7 @@ public class Crawler {
   }
 
   private String makeAbsolute(String url, String link) {
-    if (link.matches("http://.*")) {
+    if (link.matches("http://.*") || link.matches("https://.*")) {
       return link;
     }
     if (link.matches("/.*") && url.matches(".*$[^/]")) {
