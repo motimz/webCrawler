@@ -6,7 +6,6 @@ package webcrawler;
 
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,22 +19,22 @@ import java.util.regex.Pattern;
  */
 public class Crawler {
     
-    private LinkedList<MyUrl> _urls;
-    private Validator _validator;
+    final private LinkedList<MyUrl> _urls;
+    final private Validator _validator;
     /** Constructor for Crawler Class 
-     *  @param validator that validates the url
+     *  @param v that validates the url
      * @
      */
     public Crawler(Validator v)
     {
         _validator=v;   
-        _urls=new LinkedList<MyUrl>();
+        _urls=new LinkedList<>();
     }
     
     public void startCrawl(MyUrl url,int limit)
     {
-        List<String> urls_list=new ArrayList<String>();
         try{
+            List<String> urls_list=new ArrayList<String>();
         //add the first url to the list
             _urls.add(url);
             if(!_validator.Validate(_urls.peek(),new MyUrl(new URL(_urls.peek().getHost()+"/robots.txt")))) //checks if first url validated
@@ -62,7 +61,7 @@ public class Crawler {
                     }
                 
         }
-        }catch(Exception a)
+        }catch(MalformedURLException a)
         {
             System.out.println(a.toString());
         }
@@ -80,12 +79,11 @@ public class Crawler {
        
         try{
             String builder=url.getString();
-            String linkd=new String();
+            String linkd;
             
             Matcher tagmatch = htmltag.matcher(builder.toString());
             while (tagmatch.find()) {
                 String href = tagmatch.group(1); // href
-                String linkText = tagmatch.group(2); // link text
                 
                 Matcher matcher = link.matcher(href);
                 while (matcher.find())
@@ -106,7 +104,7 @@ public class Crawler {
         }
         return (links);
     }
-    
+    //mail or Javascript
     private boolean valid(String s) {
     if (s.matches("javascript:.*|mailto:.*")) {
       return false;
@@ -114,6 +112,7 @@ public class Crawler {
     return true;
   }
 
+   //creates the link by the way it is given (path , www. , http) and its domain
   private String makeAbsolute(String url, String link) {
     if (link.matches("http://.*") || link.matches("https://.*")) {
       return link;
@@ -133,6 +132,5 @@ public class Crawler {
     throw new RuntimeException("Cannot make the link absolute. Url: " + url
         + " Link " + link);
     
-  }
-    
+  }  
 }
