@@ -93,8 +93,8 @@ public class Crawler {
                  linkd = linkd.replaceAll("\"", "");
                  
                 if (valid(linkd)) {
-                    links.add(makeAbsolute(url.getAddress(), linkd));  
-                }
+                    links.add(makeAbsolute(url.getAddress(), linkd)); 
+                    }
                 
             }  
             }
@@ -114,18 +114,23 @@ public class Crawler {
 
    //creates the link by the way it is given (path , www. , http) and its domain
   private String makeAbsolute(String url, String link) {
+    //url= http://google.com link=http://maps.google.co.il/maps?hl=iw&tab=wl   
     if (link.matches("http://.*") || link.matches("https://.*")) {
       return link;
     }
+    
     if (link.matches("/.*") && url.matches(".*$[^/]")) {
       return url + "/" + link;
     }
+    //url = http://www.vogella.com/articles/JavaRegularExpressions/article.html link=#top
     if (link.matches("[^/].*") && url.matches(".*[^/]")) {
       return url + "/" + link;
     }
+    
     if (link.matches("/.*") && url.matches(".*[/]")) {
       return url + link;
     }
+    //link = /search?    url = http://www.google.com
     if (link.matches("/.*") && url.matches(".*[^/]")) {
       return url + link;
     }
