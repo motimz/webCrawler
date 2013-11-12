@@ -116,6 +116,7 @@ public class Validator {
         }
         catch (IOException e) {}
         
+        //return false;
         return false;
     }
 }

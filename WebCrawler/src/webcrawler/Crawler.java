@@ -134,6 +134,9 @@ public class Crawler {
     if (link.matches("/.*") && url.matches(".*[^/]")) {
       return url + link;
     }
+    if (link.matches("") && url.matches(".*[^/]")) {
+      return url + link;
+    }
     throw new RuntimeException("Cannot make the link absolute. Url: " + url
         + " Link " + link);
     

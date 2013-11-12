@@ -38,7 +38,7 @@ public class WebCrawler {
         try
         {
         int limit =30;
-        MyUrl url=new MyUrl(new URL("http://www.vogella.com/articles/JavaRegularExpressions/article.html"));
+        MyUrl url=new MyUrl(new URL("/private/var/folders/w8/jxyz5pf51lz7nmqm_hv5z5br0000gn/T/testng-eclipse--530204890/testng-customsuite.xml"));
         //MyUrl url=new MyUrl(new URL("http://www.google.com"));
         keywords.add("Java");
         // create Crawler and start
