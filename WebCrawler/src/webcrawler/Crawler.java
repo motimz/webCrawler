@@ -4,7 +4,7 @@
  */
 package webcrawler;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -48,7 +48,7 @@ public class Crawler {
             for(int i=0;i<limit && !_urls.isEmpty();i++)
             {
                     MyUrl check=_urls.poll();// pops the first url in list
-                    System.out.println("Downloading " + check.getHost());
+                    System.out.println("Downloading " + check.getAddress());
                     urls_list=scanUrl(check);//scans the url for links and returns list of links
                     for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
                     {
@@ -74,25 +74,32 @@ public class Crawler {
         Pattern htmltag;
         Pattern link;
         
-        htmltag = Pattern.compile("<a\\b[^>]*href=\"[^>]*>(.*?)</a>");
-        link = Pattern.compile("href=\"[^>]*\">");
+        htmltag = Pattern.compile("(?i)<a([^>]+)>(.+?)</a>");
+        link = Pattern.compile("\\s*(?i)href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))");
         List<String> links = new ArrayList<String>();
        
         try{
             String builder=url.getString();
+            String linkd=new String();
             
             Matcher tagmatch = htmltag.matcher(builder.toString());
             while (tagmatch.find()) {
-                Matcher matcher = link.matcher(tagmatch.group());
-                matcher.find();     
-                String linkd = matcher.group().replaceFirst("href=\"", "")
-                .replaceFirst("\">", "")
-                .replaceFirst("\"[\\s]?target=\"[a-zA-Z_0-9]*", "");
+                String href = tagmatch.group(1); // href
+                String linkText = tagmatch.group(2); // link text
+                
+                Matcher matcher = link.matcher(href);
+                while (matcher.find())
+                {
+                 linkd = matcher.group(1); // link
+                 linkd = linkd.replaceAll("'", "");
+                 linkd = linkd.replaceAll("\"", "");
+                 
                 if (valid(linkd)) {
                     links.add(makeAbsolute(url.getAddress(), linkd));  
                 }
                 
             }  
+            }
             return (links); 
         }catch(IOException a){
             System.out.println(a.toString());
@@ -125,6 +132,7 @@ public class Crawler {
     }
     throw new RuntimeException("Cannot make the link absolute. Url: " + url
         + " Link " + link);
+    
   }
     
 }
