@@ -47,12 +47,7 @@ public class WebCrawler {
         catch(MalformedURLException e)
         {
             System.out.println("Malformed URL " + e.getMessage());
-        }
-        catch(IOException e)
-        {
-            System.out.println("Malformed URL " + e.getMessage());
-        }
-        
+        }      
         
         
     }

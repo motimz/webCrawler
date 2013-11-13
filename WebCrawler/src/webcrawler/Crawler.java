@@ -38,7 +38,7 @@ public class Crawler {
     public void startCrawl(MyUrl url,int limit)
     {
         try{
-            List<MyUrl> urls_list=new ArrayList<MyUrl>();
+            
         //add the first url to the list
             _urls.add(url);
             if(!_validator.Validate(_urls.peek(),new MyUrl(new URL(_urls.peek().getHost()+"/robots.txt")))) //checks if first url validated
@@ -52,8 +52,7 @@ public class Crawler {
             {
                 MyUrl check=_urls.poll();// pops the first url in list
                 System.out.println("Downloading " + check.getAddress());
-                urls_list=scanUrl(check);//scans the url for links and returns list of links
-                //for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
+                List<MyUrl> urls_list=scanUrl(check);//scans the url for links and returns list of links
                 for (MyUrl currentUrl : urls_list)
                 {
                     if(_validator.Validate(currentUrl,new MyUrl(new URL(currentUrl.getHost()+"/robots.txt"))))
@@ -75,6 +74,7 @@ public class Crawler {
     }
     /** This function scans url and returns a list of the links in it
      *  @param url of type MyUrl stands for a URL
+     *  @return a List<MyUrl> of the links from url
      */
     public List<MyUrl> scanUrl(MyUrl url)
     {      
@@ -83,7 +83,7 @@ public class Crawler {
         
         htmltag = Pattern.compile("(?i)<a([^>]+)>(.+?)</a>");
         link = Pattern.compile("\\s*(?i)href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))");
-        List<MyUrl> links = new ArrayList<MyUrl>();
+        List<MyUrl> links = new ArrayList<>();
        
         try{
             String builder=url.getString();
