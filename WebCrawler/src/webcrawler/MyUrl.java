@@ -11,9 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * Stub MyURL class
+ * MyURL class
  * @author gilmi
  */
 public class MyUrl
@@ -67,9 +69,37 @@ public class MyUrl
     }
     // ================================================
     
+    /**
+     * @return url path as string
+     */
     public String getPath() { return _url.getPath(); }
+    /**
+     * @return url host as string
+     */    
     public String getHost() { return "http://" + _url.getHost(); }
+     /**
+     * @return url address as string
+     */
     public String getAddress() { return _url.toString(); }
+    /**
+     * find the current host + folder of the url
+     * @return an absolute list to folder
+     */
+    public String getHostPath()
+    {
+            String pattern = "(.*)(/.*?)";
+            String urlstr = getAddress();
+            Matcher matcher = Pattern.compile(pattern).matcher(urlstr);
+
+           if (matcher.find())
+               return matcher.group(0);
+           
+           return getHost();
+        
+    }
+    /**
+     * @return the file type of the url
+     */
     public String getType() throws IOException
     {
         HttpURLConnection connection = (HttpURLConnection)_url.openConnection();
