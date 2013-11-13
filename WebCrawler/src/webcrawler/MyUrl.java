@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-  
- package webcrawler;
- 
+package webcrawler;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,15 +11,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
- 
- /**
-  * Stub MyURL class
-  * @author gilmi
-  */
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * MyURL class
+ * @author gilmi
+ */
 public class MyUrl
 {
-     private URL _url;
-
+    private URL _url;
+    
     public MyUrl(URL url)
     {
         _url=url;
@@ -68,14 +69,48 @@ public class MyUrl
     }
     // ================================================
     
+    /**
+     * @return url path as string
+     */
     public String getPath() { return _url.getPath(); }
-    public String getHost() { return ("http://"+_url.getHost()); }
+    /**
+     * @return url host as string
+     */    
+    public String getHost() { return "http://" + _url.getHost(); }
+     /**
+     * @return url address as string
+     */
     public String getAddress() { return _url.toString(); }
+    /**
+     * find the current host + folder of the url
+     * @return an absolute list to folder
+     */
+    public String getHostPath()
+    {
+            String pattern = "(.*)(/.*?)";
+            String urlstr = getAddress();
+            Matcher matcher = Pattern.compile(pattern).matcher(urlstr);
+
+           if (matcher.find())
+               return matcher.group(0);
+           
+           return getHost();
+        
+    }
+    /**
+     * @return the file type of the url
+     */
     public String getType() throws IOException
     {
         HttpURLConnection connection = (HttpURLConnection)_url.openConnection();
         connection.setRequestMethod("HEAD");
         connection.connect();
-        return connection.getContentType();
+        
+         String type = connection.getContentType();
+        connection.disconnect();
+        if (type == null)
+            type = "";
+        
+         return type;
     }
- }
+}
