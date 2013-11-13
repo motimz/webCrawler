@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
  */
 public class Crawler {
     
-    final private LinkedList<MyUrl> _urls;
-    final private Validator _validator;
+    final private LinkedList<MyUrl> _urls; //linked list of MyUrl
+    final private Validator _validator;//the validator
     /** Constructor for Crawler Class 
      *  @param v that validates the url
      * @
@@ -31,6 +31,10 @@ public class Crawler {
         _urls=new LinkedList<>();
     }
     
+    /** This function starts the crawl
+     *  @param url of type MyUrl stands for my first URL 
+     *  @param limit stands for the limit of scanned URLs
+     */
     public void startCrawl(MyUrl url,int limit)
     {
         try{
@@ -69,7 +73,9 @@ public class Crawler {
         }
         
     }
-    
+    /** This function scans url and returns a list of the links in it
+     *  @param url of type MyUrl stands for a URL
+     */
     public List<MyUrl> scanUrl(MyUrl url)
     {      
         Pattern htmltag;
@@ -107,7 +113,9 @@ public class Crawler {
         }
         return (links);
     }
-    //mail or Javascript
+    /** This function check if a string is mail or javascript
+     *  @param s of type String stands for a string.
+     */
     private boolean valid(String s) {
     if (s.matches("javascript:.*|mailto:.*")) {
       return false;
@@ -115,9 +123,15 @@ public class Crawler {
     return true;
   }
 
-   //creates the link by the way it is given (path , www. , http) and its domain
+    /** This Function creates the link by the way it is given 
+     * (path , www. , http) and its domain
+     *  @param url of type String stands for the url domain.
+     *  @param link of type String stands for the url checked inside the domain.
+     */
+   //
   private String makeAbsolute(String url, String link) {
     //url= http://google.com link=http://maps.google.co.il/maps?hl=iw&tab=wl   
+      try{
     if (link.matches("http://.*") || link.matches("https://.*")) {
       return link;
     }
@@ -142,6 +156,7 @@ public class Crawler {
     }
     throw new RuntimeException("Cannot make the link absolute. Url: " + url
         + " Link " + link);
-    
+      }catch(RuntimeException e){}
+      return url;
   }  
 }
