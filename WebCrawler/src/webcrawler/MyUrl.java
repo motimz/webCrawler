@@ -78,6 +78,8 @@ public class MyUrl
         
          String type = connection.getContentType();
         connection.disconnect();
+        if (type == null)
+            type = "";
         
          return type;
     }
