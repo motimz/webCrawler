@@ -34,7 +34,7 @@ public class Crawler {
     public void startCrawl(MyUrl url,int limit)
     {
         try{
-            List<String> urls_list=new ArrayList<String>();
+            List<MyUrl> urls_list=new ArrayList<MyUrl>();
         //add the first url to the list
             _urls.add(url);
             if(!_validator.Validate(_urls.peek(),new MyUrl(new URL(_urls.peek().getHost()+"/robots.txt")))) //checks if first url validated
@@ -44,23 +44,25 @@ public class Crawler {
             /* run on the list of urls . download the url if it is validated
              * and pop it from the list
              */
-            for(int i=0;i<limit && !_urls.isEmpty();i++)
+            for(int numOfScanned=0; numOfScanned < limit && !_urls.isEmpty();)
             {
-                    MyUrl check=_urls.poll();// pops the first url in list
-                    System.out.println("Downloading " + check.getAddress());
-                    urls_list=scanUrl(check);//scans the url for links and returns list of links
-                    for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
+                MyUrl check=_urls.poll();// pops the first url in list
+                System.out.println("Downloading " + check.getAddress());
+                urls_list=scanUrl(check);//scans the url for links and returns list of links
+                //for(int j=0;j<urls_list.size();j++) //run on the list of scanned links
+                for (MyUrl currentUrl : urls_list)
+                {
+                    if(_validator.Validate(currentUrl,new MyUrl(new URL(currentUrl.getHost()+"/robots.txt"))))
                     {
-                        
-                        if(_validator.Validate(new MyUrl(new URL(urls_list.get(j))),new MyUrl(new URL(urls_list.get(j)+"/robots.txt"))))
-                        {
-                            System.out.println("scanned " + urls_list.get(j).toString());
-                            _urls.add(new MyUrl(new URL(urls_list.get(j))));
-                        }
-                        
+                        _urls.add(currentUrl);
+                        System.out.println(numOfScanned + " scanned " + currentUrl.getAddress());
+                        numOfScanned++;
+                        if (numOfScanned > limit)
+                            break;
                     }
-                
-        }
+
+                }
+            }
         }catch(MalformedURLException a)
         {
             System.out.println(a.toString());
@@ -68,21 +70,22 @@ public class Crawler {
         
     }
     
-    public List<String> scanUrl(MyUrl url)
+    public List<MyUrl> scanUrl(MyUrl url)
     {      
         Pattern htmltag;
         Pattern link;
         
         htmltag = Pattern.compile("(?i)<a([^>]+)>(.+?)</a>");
         link = Pattern.compile("\\s*(?i)href\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))");
-        List<String> links = new ArrayList<String>();
+        List<MyUrl> links = new ArrayList<MyUrl>();
        
         try{
             String builder=url.getString();
             String linkd;
             
             Matcher tagmatch = htmltag.matcher(builder.toString());
-            while (tagmatch.find()) {
+            while (tagmatch.find()) 
+            {
                 String href = tagmatch.group(1); // href
                 
                 Matcher matcher = link.matcher(href);
@@ -92,11 +95,11 @@ public class Crawler {
                  linkd = linkd.replaceAll("'", "");
                  linkd = linkd.replaceAll("\"", "");
                  
-                if (valid(linkd)) {
-                    links.add(makeAbsolute(url.getAddress(), linkd)); 
-                    }
+                if (valid(linkd)) 
+                    links.add(new MyUrl(new URL(makeAbsolute(url.getAddress(), linkd)))); 
+                    
                 
-            }  
+                }  
             }
             return (links); 
         }catch(IOException a){

@@ -95,7 +95,9 @@ public class Validator {
             if(url.getType()==null)
                 return false;
             if (url.getType().contains(FILETYPE))
+            {
                 return true;
+            }
             
         } catch (IOException e) { System.err.println("can't connect");}
         

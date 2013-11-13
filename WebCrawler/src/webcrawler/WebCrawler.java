@@ -22,32 +22,31 @@ public class WebCrawler {
      */
     public static void main(String[] args) {
         // check usage
-        /*
+        
         if (args.length < NUM_OF_ARGS)
         {
             System.out.println("usage: java WebCrawler <url> <limit> <keywords>");
             return;
         }
-         */
+         
         // create keywords array
         ArrayList<String> keywords = new ArrayList<>();
-        /*
+        
         for (int i = 2; i < args.length; i++)
             keywords.add(args[i]);
-        */
+        
         try
         {
-        int limit =30;
-        MyUrl url=new MyUrl(new URL("/private/var/folders/w8/jxyz5pf51lz7nmqm_hv5z5br0000gn/T/testng-eclipse--530204890/testng-customsuite.xml"));
-        //MyUrl url=new MyUrl(new URL("http://www.google.com"));
-        keywords.add("Java");
+        int limit = Integer.parseInt(args[1]);
+        
+        MyUrl url=new MyUrl(new URL(args[0]));
         // create Crawler and start
         Crawler crawler = new Crawler(new Validator(keywords));
         crawler.startCrawl(url, limit);
         }
         catch(MalformedURLException e)
         {
-            
+            System.out.println("Malformed URL " + e.getMessage());
         }
         catch(IOException e)
         {
