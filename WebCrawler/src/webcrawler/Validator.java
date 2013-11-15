@@ -93,7 +93,7 @@ public class Validator {
            String pattern = "Disallow:\\s*" + url.getPath();
            Matcher matcher = Pattern.compile(pattern).matcher(robo);
            
-           if (matcher.find())
+           if (matcher.find() && url.getPath().compareTo("/")!=0 && url.getPath().compareTo("")!=0)
                return true;
         }
         catch (IOException e) {} // no robots? no problem.
@@ -109,13 +109,16 @@ public class Validator {
     {
         try
         {
+            if(url.getType()==null)
+                return false;
             if (url.getType().contains(FILETYPE))
+            {
                 return true;
-            
-        } catch (IOException e) { System.err.println("can't connect");}
-        
-        return false;
-    }
+            } 
+         } catch (IOException e) { System.err.println("can't connect");}      
+         return false;
+     }
+
     /**
      * checks if the url has one or more of the keywords in it's title
      * @param url to be checked
