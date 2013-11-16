@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class MyUrl
     
     public MyUrl(URL url)
     {
+        
         _url=url;
     }
     /**
@@ -88,14 +90,22 @@ public class MyUrl
     public String getHostPath()
     {
             String pattern = "(.*)(/.*?)";
-            String urlstr = getAddress();
-            Matcher matcher = Pattern.compile(pattern).matcher(urlstr);
+            String urladdr = getAddress();
+            String urlhost = getHost();
+            if (!urladdr.equals(urlhost))
+            {
+                Matcher matcher = Pattern.compile(pattern).matcher(urladdr);
 
-           if (matcher.find())
-               return matcher.group(0);
+               if (matcher.find())
+                   return matcher.group(0); 
+            }
            
-           return getHost();
+           return urlhost + "/";
         
+    }
+    public String getProtocol()
+    {
+        return _url.getProtocol();
     }
     /**
      * @return the file type of the url
@@ -112,5 +122,19 @@ public class MyUrl
             type = "";
         
          return type;
+    }
+    /**
+     * 
+     * @return a MyUrl to it's robots file 
+     */
+    public MyUrl getRobots()
+    {
+        MyUrl myRobots = null;
+        try
+        {
+            myRobots = new MyUrl(new URL(getHost()+"/robots.txt"));
+        }
+        catch(MalformedURLException e ) { }
+        return myRobots;
     }
 }

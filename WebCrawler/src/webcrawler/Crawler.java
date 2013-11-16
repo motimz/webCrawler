@@ -102,7 +102,7 @@ public class Crawler {
                  linkd = linkd.replaceAll("\"", "");
                  
                 if (valid(linkd)) 
-                    links.add(new MyUrl(new URL(makeAbsolute(url.getAddress(), linkd)))); 
+                    links.add(new MyUrl(new URL(makeAbsolute(url, linkd)))); 
                     
                 
                 }  
@@ -122,6 +122,23 @@ public class Crawler {
     }
     return true;
   }
+    /** This Function creates the link by the way it is given 
+     * (path , www. , http) and its domain
+     *  @param url of type MyUrl of the current url.
+     *  @param link of type String stands for the url checked inside the domain.
+     */
+    private String makeAbsolute(MyUrl url, String link)
+    {
+        // if link is absolute including protocol, return it
+        if (link.matches("http://.*") || link.matches("https://.*")) 
+            return link; 
+        // if link is absolute without protocol, add protocol and return it
+        else if (link.matches("//.*"))
+            return url.getProtocol() + ":" + link;
+        
+        // else
+        return url.getHostPath() + link;
+    }
 
     /** This Function creates the link by the way it is given 
      * (path , www. , http) and its domain
@@ -134,7 +151,7 @@ public class Crawler {
       try{
     if (link.matches("http://.*") || link.matches("https://.*")) {
       return link;
-    }
+    }   
     
     if (link.matches("/.*") && url.matches(".*$[^/]")) {
       return url + "/" + link;
