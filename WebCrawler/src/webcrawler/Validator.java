@@ -90,10 +90,11 @@ public class Validator {
     {
         try {    
            String robo = robots.getString();
-           String pattern = "Disallow:\\s*" + url.getPath();
+           String urlPath = url.getPath();
+           String pattern = "Disallow:\\s*" + urlPath;
            Matcher matcher = Pattern.compile(pattern).matcher(robo);
            
-           if (matcher.find() && url.getPath().compareTo("/")!=0 && url.getPath().compareTo("")!=0)
+           if (matcher.find() && urlPath.compareTo("/")!=0 && urlPath.compareTo("")!=0)
                return true;
         }
         catch (IOException e) {} // no robots? no problem.
@@ -109,8 +110,6 @@ public class Validator {
     {
         try
         {
-            if(url.getType()==null)
-                return false;
             if (url.getType().contains(FILETYPE))
             {
                 return true;
