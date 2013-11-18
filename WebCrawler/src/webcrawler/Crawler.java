@@ -138,42 +138,5 @@ public class Crawler {
         
         // else
         return url.getHostPath() + link;
-    }
-
-    /** This Function creates the link by the way it is given 
-     * (path , www. , http) and its domain
-     *  @param url of type String stands for the url domain.
-     *  @param link of type String stands for the url checked inside the domain.
-     */
-   //
-  private String makeAbsolute(String url, String link) {
-    //url= http://google.com link=http://maps.google.co.il/maps?hl=iw&tab=wl   
-      try{
-    if (link.matches("http://.*") || link.matches("https://.*")) {
-      return link;
-    }   
-    
-    if (link.matches("/.*") && url.matches(".*$[^/]")) {
-      return url + "/" + link;
-    }
-    //url = http://www.vogella.com/articles/JavaRegularExpressions/article.html link=#top
-    if (link.matches("[^/].*") && url.matches(".*[^/]")) {
-      return url + "/" + link;
-    }
-    
-    if (link.matches("/.*") && url.matches(".*[/]")) {
-      return url + link;
-    }
-    //link = /search?    url = http://www.google.com
-    if (link.matches("/.*") && url.matches(".*[^/]")) {
-      return url + link;
-    }
-    if (link.matches("") && url.matches(".*[^/]")) {
-      return url + link;
-    }
-    throw new RuntimeException("Cannot make the link absolute. Url: " + url
-        + " Link " + link);
-      }catch(RuntimeException e){}
-      return url;
-  }  
+    } 
 }
