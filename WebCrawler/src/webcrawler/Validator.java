@@ -1,6 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This class functions as a Validator for urls.
+ * It validates MyUrls for the use of the crawler.
+ * it will check duplication with previous MyUrls seen, if a url is allowed,
+ * if a url is of the right type and does it has any of the keywords i it's title
+ * 
  */
 package webcrawler;
 
@@ -12,10 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
- * @author gilmi
- * 
- * validates MyUrls for the use of the crawler.
+ * Validates MyUrls for the use of the crawler.
+ * @author Gil Mizrahi
+ * @author Moti Mizrahi
  * it will check duplication with previous MyUrls seen, if a url is allowed,
  * if a url is of the right type and does it has any of the keywords i it's title
  */
@@ -39,12 +41,13 @@ public class Validator {
         _keywords += ").*";
         
     }
-    /** Validate Function. checks 4 things:
-     * 1. have we seen this url?\n
-     * 2. is it disallowed?\n
-     * 3. is it the wrong filetype?\n
-     * 4. it none of the keywords specified are in it's title?\n
-     * \n
+    /** Validate Function; checks 4 things:
+     * <ol>
+     * <li> have we seen this url?</li>
+     * <li> is it disallowed?</li>
+     * <li>is it the wrong filetype?</li>
+     * <li>it none of the keywords specified are in it's title?</li>
+     * </ol>
      * if it answers "false" on one of these questions, it returns false
      * otherwise, it returns true
      * 
@@ -81,7 +84,7 @@ public class Validator {
          
     }
     /**
-     * checks if the url is not disallowed in robots
+     * checks if the url is not disallowed in robots file.
      * @param url to be checked
      * @param robots robots.txt file to be checked in
      * @return boolean
@@ -90,10 +93,11 @@ public class Validator {
     {
         try {    
            String robo = robots.getString();
-           String pattern = "Disallow:\\s*" + url.getPath();
+           String urlPath = url.getPath();
+           String pattern = "Disallow:\\s*" + urlPath;
            Matcher matcher = Pattern.compile(pattern).matcher(robo);
            
-           if (matcher.find())
+           if (matcher.find() && urlPath.compareTo("/")!=0 && urlPath.compareTo("")!=0)
                return true;
         }
         catch (IOException e) {} // no robots? no problem.
@@ -110,12 +114,13 @@ public class Validator {
         try
         {
             if (url.getType().contains(FILETYPE))
+            {
                 return true;
-            
-        } catch (IOException e) { System.err.println("can't connect");}
-        
-        return false;
-    }
+            } 
+         } catch (IOException e) { System.err.println("can't connect");}      
+         return false;
+     }
+
     /**
      * checks if the url has one or more of the keywords in it's title
      * @param url to be checked
