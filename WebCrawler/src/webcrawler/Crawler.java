@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Crawler crawls the web.
  */
 package webcrawler;
 
@@ -14,8 +13,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
- *
- * @author motimi
+ * Crawler crawls the web.
+ * @author Moti Mizrahi
+ * @author Gil Mizrahi
  */
 public class Crawler {
     
@@ -97,21 +97,20 @@ public class Crawler {
                 Matcher matcher = link.matcher(href);
                 while (matcher.find())
                 {
-                     linkd = matcher.group(1); // link
-                     linkd = linkd.replaceAll("'", "");
-                     linkd = linkd.replaceAll("\"", "");
-
-                     try {
+                    linkd = matcher.group(1); // link
+                    linkd = linkd.replaceAll("'", "");
+                    linkd = linkd.replaceAll("\"", "");
+					
+                    try {
                          links.add(new MyUrl(new URL(MyUrl.makeAbsolute(url, linkd))));
-                     } 
-                     catch(MalformedURLException e) { /* skip */ }
-
+                    } 
+                    catch(MalformedURLException e) { /* skip */ }
                 }  
             }
-            return (links); 
         }catch(IOException a){
-            System.out.println(a.toString());
+            /*System.out.println(a.toString());*/
         }
         return (links);
     }
 }
+

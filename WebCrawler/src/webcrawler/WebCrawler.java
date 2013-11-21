@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * The WebCrawler crawls the web in search of links.
  */
 package webcrawler;
 
@@ -9,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- *
+ * The WebCrawler crawls the web in search of links
  * @author motimi
  * @author gilmi
  */
@@ -17,6 +16,7 @@ public class WebCrawler {
 
     private static final int NUM_OF_ARGS = 3;
     /**
+     * creates a Crawler instance and starts to crawl
      * @param args: args[0] = url, args[1] = limit and the rest are keywords
      */
     public static void main(String[] args) {
@@ -50,9 +50,6 @@ public class WebCrawler {
         catch(MalformedURLException e)
         {
             System.err.println("Malformed URL: " + args[0]);
-        }  
-        
-        
-        
+        }       
     }
 }

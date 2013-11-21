@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * MyURL class wraps Java's URL.
  */
 package webcrawler;
 
@@ -16,13 +15,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * MyURL class
- * @author gilmi
+ * MyURL class wraps Java's URL
+ * @author Gil Mizrahi
+ * @author Moti Mizrahi
  */
 public class MyUrl
 {
     private final URL _url;
-    
+    /**
+     * Constructor
+     * @param url Java's URL
+     */
     public MyUrl(URL url)
     {
         
@@ -34,8 +37,7 @@ public class MyUrl
      * @throws java.io.IOException
      */
     public String getString() throws IOException
-    {
-        
+    {   
         URLConnection connection = _url.openConnection();
         BufferedReader in;
         in = new BufferedReader(
@@ -104,15 +106,17 @@ public class MyUrl
             link = link.substring(1);
         return url.getHostPath() + link;
     } 
-    /**
+   /**
+     * Path of URL
      * @return url path as string
      */
     public String getPath() { return _url.getPath(); }
-    /**
+    /** Host of URL
      * @return url host as string
      */    
     public String getHost() { return "http://" + _url.getHost(); }
      /**
+      * Address of URL
      * @return url address as string
      */
     public String getAddress() { return _url.toString(); }
@@ -122,29 +126,31 @@ public class MyUrl
      */
     public String getHostPath()
     {
-            String pattern = "(.*)(/.*?)";
-            String urladdr = getAddress();
-            String urlhost = getHost();
-            if (!urladdr.equals(urlhost))
-            {
-                Matcher matcher = Pattern.compile(pattern).matcher(urladdr);
+		String pattern = "(.*)(/.*?)";
+		String urladdr = getAddress();
+		String urlhost = getHost();
+		if (!urladdr.equals(urlhost))
+		{
+			Matcher matcher = Pattern.compile(pattern).matcher(urladdr);
 
-               if (matcher.find())
-                   return matcher.group(0); 
-               
-            }
-            
-            // else
-            return urlhost + "/";
-        
+		   if (matcher.find())
+			   return matcher.group(0);    
+		}
+		// else
+		return urlhost + "/";
     }
+	/**
+     * Returns the protocol of the URL
+     * @return The protocol the URL connects through
+     */
     public String getProtocol()
     {
         return _url.getProtocol();
     }
     /**
+     * Returns the type of the file in the URL
      * @return the file type of the url
-     *  @throws java.io.IOException if can't connect
+     * @throws IOException if can't connect
      */
     public String getType() throws IOException
     {
@@ -160,7 +166,7 @@ public class MyUrl
          return type;
     }
     /**
-     * 
+     * returns the robots file of the site of the url
      * @return a MyUrl to it's robots file 
      */
     public MyUrl getRobots()
