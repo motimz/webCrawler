@@ -30,14 +30,12 @@ public class MyUrl
     }
     /**
      * connects to url and returns the content of the url
-     * ############# TODO: Documentation! ############
-     * 
      * @return url content String
      * @throws java.io.IOException
-     * @throw TODO
      */
     public String getString() throws IOException
-    { 
+    {
+        
         URLConnection connection = _url.openConnection();
         BufferedReader in;
         in = new BufferedReader(
@@ -47,6 +45,7 @@ public class MyUrl
         StringBuilder response = new StringBuilder();
         String inputLine;
 
+        // read while you can
         while ((inputLine = in.readLine()) != null) 
             response.append(inputLine);
 
@@ -71,7 +70,40 @@ public class MyUrl
         return hash;
     }
     // ================================================
-    
+    /** This function check if a string is mail or javascript
+     *  @param s of type String stands for a string.
+     *  @return boolean
+     */
+    private static boolean isJSOrMail(String s) 
+    {
+        return s.matches("javascript:.*|mailto:.*");
+    }
+    /** This Function creates the link by the way it is given 
+     * (path , www. , http) and its domain
+     *  @param url of type MyUrl of the current url.
+     *  @param link of type String stands for the url checked inside the domain.
+     *  @return Absolute path of url.
+     * @throws java.net.MalformedURLException
+     */
+    public static String makeAbsolute(MyUrl url, String link) throws MalformedURLException
+    {
+        if (isJSOrMail(link))
+            throw new MalformedURLException(link);
+        
+        // if link is absolute including protocol, return it
+        if (link.matches("http://.*") || link.matches("https://.*")) 
+            return link;
+        // if link is absolute without protocol, add current protocol and return it
+        else if (link.matches("//.*"))
+            return url.getProtocol() + ":" + link;
+        // if link doesn't use a kind of http protocol throw exception
+        else if (link.matches(".*://"))
+            throw new MalformedURLException(link);
+        
+        if (link.startsWith("/"))
+            link = link.substring(1);
+        return url.getHostPath() + link;
+    } 
     /**
      * @return url path as string
      */
@@ -99,9 +131,11 @@ public class MyUrl
 
                if (matcher.find())
                    return matcher.group(0); 
+               
             }
-           
-           return urlhost + "/";
+            
+            // else
+            return urlhost + "/";
         
     }
     public String getProtocol()

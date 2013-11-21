@@ -114,7 +114,7 @@ public class Validator {
             {
                 return true;
             } 
-         } catch (IOException e) { System.err.println("can't connect");}      
+         } catch (IOException e) { /* skip */ }      
          return false;
      }
 

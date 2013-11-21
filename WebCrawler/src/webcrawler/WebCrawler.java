@@ -24,7 +24,7 @@ public class WebCrawler {
         
         if (args.length < NUM_OF_ARGS)
         {
-            System.out.println("usage: java WebCrawler <url> <limit> <keywords>");
+            System.err.println("usage: java WebCrawler <url> <limit> <keywords>");
             return;
         }
          
@@ -36,17 +36,22 @@ public class WebCrawler {
         
         try
         {
-        int limit = Integer.parseInt(args[1]);
-        
-        MyUrl url=new MyUrl(new URL(args[0]));
-        // create Crawler and start
-        Crawler crawler = new Crawler(new Validator(keywords));
-        crawler.startCrawl(url, limit);
+            int limit = Integer.parseInt(args[1]);
+            System.out.println("Maximum number of pages: " + limit);
+            MyUrl url=new MyUrl(new URL(args[0]));
+            // create Crawler and start
+            Crawler crawler = new Crawler(new Validator(keywords));
+            crawler.startCrawl(url, limit);
+        }
+        catch(NumberFormatException e)
+        {
+            System.err.println("Bad limit number");
         }
         catch(MalformedURLException e)
         {
-            System.out.println("Malformed URL " + e.getMessage());
-        }      
+            System.err.println("Malformed URL: " + args[0]);
+        }  
+        
         
         
     }
