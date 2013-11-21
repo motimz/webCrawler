@@ -94,7 +94,7 @@ public class Validator {
         try {    
            String robo = robots.getString();
            String urlPath = url.getPath();
-           String pattern = "Disallow:\\s*" + urlPath;
+           String pattern = "Disallow:\\s*" + urlPath + "\b";
            Matcher matcher = Pattern.compile(pattern).matcher(robo);
            
            if (matcher.find() && urlPath.compareTo("/")!=0 && urlPath.compareTo("")!=0)

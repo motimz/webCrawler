@@ -102,8 +102,14 @@ public class MyUrl
         else if (link.matches(".*://"))
             throw new MalformedURLException(link);
         
-        if (link.startsWith("/"))
+        // id in current address is the url
+        else if (link.startsWith("#"))
+            return url.getAddress();
+        
+        // unimportant slash
+        else if (link.startsWith("/"))
             link = link.substring(1);
+        
         return url.getHostPath() + link;
     } 
    /**
