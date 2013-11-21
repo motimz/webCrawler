@@ -48,7 +48,7 @@ public class Crawler {
             /* run on the list of urls . download the url if it is validated
              * and pop it from the list
              */
-            for(int numOfScanned=0; (limit != 0 || numOfScanned < limit) && !_urls.isEmpty();)
+            for(int numOfScanned=0; (limit == 0 || numOfScanned < limit) && !_urls.isEmpty();)
             {
                 MyUrl check=_urls.poll();// pops the first url in list
                 System.out.println("Downloading " + check.getAddress());
