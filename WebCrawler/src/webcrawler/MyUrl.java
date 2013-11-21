@@ -120,7 +120,7 @@ public class MyUrl
     /** Host of URL
      * @return url host as string
      */    
-    public String getHost() { return getProtocol() + _url.getHost(); }
+    public String getHost() { return getProtocol() + "://" + _url.getHost(); }
      /**
       * Address of URL
      * @return url address as string
