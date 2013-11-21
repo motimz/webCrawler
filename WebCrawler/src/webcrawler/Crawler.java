@@ -58,7 +58,7 @@ public class Crawler {
                     if(_validator.Validate(currentUrl,new MyUrl(new URL(currentUrl.getHost()+"/robots.txt"))))
                     {
                         _urls.add(currentUrl);
-                        System.out.println(numOfScanned + " scanned " + currentUrl.getAddress());
+                        System.out.println("scanned " + currentUrl.getAddress());
                         numOfScanned++;
                         if (numOfScanned > limit)
                             break;
@@ -117,10 +117,7 @@ public class Crawler {
      *  @param s of type String stands for a string.
      */
     private boolean valid(String s) {
-    if (s.matches("javascript:.*|mailto:.*")) {
-      return false;
-    }
-    return true;
+    return !s.matches("javascript:.*|mailto:.*");
   }
     /** This Function creates the link by the way it is given 
      * (path , www. , http) and its domain

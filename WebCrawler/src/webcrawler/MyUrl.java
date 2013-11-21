@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class MyUrl
 {
-    private URL _url;
+    private final URL _url;
     
     public MyUrl(URL url)
     {
@@ -39,9 +39,10 @@ public class MyUrl
     public String getString() throws IOException
     { 
         URLConnection connection = _url.openConnection();
-        BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                                    connection.getInputStream()));
+        BufferedReader in;
+        in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()));
 
         StringBuilder response = new StringBuilder();
         String inputLine;
@@ -109,6 +110,7 @@ public class MyUrl
     }
     /**
      * @return the file type of the url
+     *  @throws java.io.IOException if can't connect
      */
     public String getType() throws IOException
     {
