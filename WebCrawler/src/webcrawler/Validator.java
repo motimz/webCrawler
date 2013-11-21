@@ -94,11 +94,14 @@ public class Validator {
         try {    
            String robo = robots.getString();
            String urlPath = url.getPath();
-           String pattern = "Disallow:\\s*" + urlPath + "\b";
+           String pattern = "Disallow:\\s*(\\S*?)\\s";
            Matcher matcher = Pattern.compile(pattern).matcher(robo);
            
-           if (matcher.find() && urlPath.compareTo("/")!=0 && urlPath.compareTo("")!=0)
-               return true;
+           while (matcher.find())// && urlPath.compareTo("/")!=0 && urlPath.compareTo("")!=0)
+           {
+               if (urlPath.contains(matcher.group(1)))
+                   return true;
+           }
         }
         catch (IOException e) {} // no robots? no problem.
         
@@ -130,7 +133,7 @@ public class Validator {
     {
         try 
         {
-            String pattern = "(<title>)(" + _keywords + ")(</title>)";
+            String pattern = "(<title\\s?.*?>)(" + _keywords + ")(</title>)";
             String urlstr = url.getString();
             Matcher matcher = Pattern.
                    compile(pattern, Pattern.CASE_INSENSITIVE).

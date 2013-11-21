@@ -137,9 +137,8 @@ public class MyUrl
 		String urlhost = getHost();
 		if (!urladdr.equals(urlhost))
 		{
-			Matcher matcher = Pattern.compile(pattern).matcher(urladdr);
-
-		   if (matcher.find())
+                    Matcher matcher = Pattern.compile(pattern).matcher(urladdr);
+		    if (matcher.find())
 			   return matcher.group(0);    
 		}
 		// else
