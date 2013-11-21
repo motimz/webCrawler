@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Crawler crawls the web.
  */
 package webcrawler;
 
@@ -59,9 +58,9 @@ public class Crawler {
                     if(_validator.Validate(currentUrl,new MyUrl(new URL(currentUrl.getHost()+"/robots.txt"))))
                     {
                         _urls.add(currentUrl);
-                        System.out.println(numOfScanned + " scanned " + currentUrl.getAddress());
+                        System.out.println("Found new URL " + currentUrl.getAddress());
                         numOfScanned++;
-                        if (numOfScanned > limit)
+                        if (numOfScanned >= limit)
                             break;
                     }
 
@@ -98,46 +97,20 @@ public class Crawler {
                 Matcher matcher = link.matcher(href);
                 while (matcher.find())
                 {
-                 linkd = matcher.group(1); // link
-                 linkd = linkd.replaceAll("'", "");
-                 linkd = linkd.replaceAll("\"", "");
-                 
-                if (valid(linkd)) 
-                    links.add(new MyUrl(new URL(makeAbsolute(url, linkd)))); 
-                    
-                
+                    linkd = matcher.group(1); // link
+                    linkd = linkd.replaceAll("'", "");
+                    linkd = linkd.replaceAll("\"", "");
+					
+                    try {
+                         links.add(new MyUrl(new URL(MyUrl.makeAbsolute(url, linkd))));
+                    } 
+                    catch(MalformedURLException e) { /* skip */ }
                 }  
             }
-            return (links); 
         }catch(IOException a){
-            System.out.println(a.toString());
+            /*System.out.println(a.toString());*/
         }
         return (links);
     }
-    /** This function check if a string is mail or javascript
-     *  @param s of type String stands for a string.
-     */
-    private boolean valid(String s) {
-    if (s.matches("javascript:.*|mailto:.*")) {
-      return false;
-    }
-    return true;
-  }
-    /** This Function creates the link by the way it is given 
-     * (path , www. , http) and its domain
-     *  @param url of type MyUrl of the current url.
-     *  @param link of type String stands for the url checked inside the domain.
-     */
-    private String makeAbsolute(MyUrl url, String link)
-    {
-        // if link is absolute including protocol, return it
-        if (link.matches("http://.*") || link.matches("https://.*")) 
-            return link; 
-        // if link is absolute without protocol, add protocol and return it
-        else if (link.matches("//.*"))
-            return url.getProtocol() + ":" + link;
-        
-        // else
-        return url.getHostPath() + link;
-    } 
 }
+
