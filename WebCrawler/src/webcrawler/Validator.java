@@ -34,7 +34,7 @@ public class Validator {
         // add keywords to pattern string
         _keywords += ".*(";
         for (String keyword : keywords)
-           _keywords += keyword + "|";
+           _keywords += "\\b" + keyword + "\\b|";
         
         // remove last "|" and replace it with ").*"
         _keywords = _keywords.substring(0, _keywords.length()-1);
